@@ -1,10 +1,12 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../theme.dart';
 
 class FlipCard extends StatefulWidget {
   final String value;
+  final String? suit;
   final bool isFaceUp;
   final bool isMatched;
   final VoidCallback onTap;
@@ -12,6 +14,7 @@ class FlipCard extends StatefulWidget {
   const FlipCard({
     super.key,
     required this.value,
+    this.suit,
     required this.isFaceUp,
     required this.isMatched,
     required this.onTap,
@@ -25,6 +28,9 @@ class _FlipCardState extends State<FlipCard>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _animation;
+
+  static const _redSuits = {'heart', 'diamond'};
+  static const _suitRed = Color(0xFFE53935);
 
   @override
   void initState() {
@@ -83,6 +89,14 @@ class _FlipCardState extends State<FlipCard>
 
   Widget _buildFront() {
     final colors = Theme.of(context).colorScheme;
+
+    if (widget.suit != null) {
+      return _buildSymbolFront(colors);
+    }
+    return _buildDigitFront(colors);
+  }
+
+  Widget _buildDigitFront(ColorScheme colors) {
     return Transform(
       alignment: Alignment.center,
       transform: Matrix4.identity()..rotateY(math.pi),
@@ -101,6 +115,58 @@ class _FlipCardState extends State<FlipCard>
             color: colors.foreground,
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildSymbolFront(ColorScheme colors) {
+    final isRed = _redSuits.contains(widget.suit);
+    final suitColor = isRed ? _suitRed : colors.foreground;
+
+    return Transform(
+      alignment: Alignment.center,
+      transform: Matrix4.identity()..rotateY(math.pi),
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          final h = constraints.maxHeight;
+          final rankSize = (h * 0.30).clamp(10.0, 28.0);
+          final iconSize = (h * 0.35).clamp(12.0, 32.0);
+          final pad = (h * 0.06).clamp(2.0, 6.0);
+
+          return Container(
+            decoration: BoxDecoration(
+              color: colors.cardFront,
+              borderRadius: BorderRadius.circular(4),
+              border: Border.all(color: suitColor, width: 1.5),
+            ),
+            padding: EdgeInsets.all(pad),
+            child: Stack(
+              children: [
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: Text(
+                    widget.value,
+                    style: GoogleFonts.jetBrainsMono(
+                      fontSize: rankSize,
+                      fontWeight: FontWeight.w800,
+                      color: suitColor,
+                      height: 1,
+                    ),
+                  ),
+                ),
+                Align(
+                  alignment: Alignment.bottomRight,
+                  child: SvgPicture.asset(
+                    'assets/${widget.suit}-icon.svg',
+                    width: iconSize,
+                    height: iconSize,
+                    colorFilter: ColorFilter.mode(suitColor, BlendMode.srcIn),
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
       ),
     );
   }

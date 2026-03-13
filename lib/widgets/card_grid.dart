@@ -166,6 +166,7 @@ class _CardGridState extends ConsumerState<CardGrid>
             child: FlipCard(
               key: ValueKey(card.id),
               value: card.value,
+              suit: card.suit,
               isFaceUp: card.isFaceUp,
               isMatched: card.isMatched,
               onTap: () {

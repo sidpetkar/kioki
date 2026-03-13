@@ -2,10 +2,14 @@ import 'dart:math';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/card_model.dart';
 import '../models/game_state.dart';
+import 'settings_notifier.dart';
 
 class GameNotifier extends Notifier<GameState> {
   final _random = Random();
   bool _disposed = false;
+
+  static const _ranks = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
+  static const _suits = ['heart', 'diamond', 'spade', 'club'];
 
   @override
   GameState build() {
@@ -15,23 +19,14 @@ class GameNotifier extends Notifier<GameState> {
   }
 
   GameState _generateCards(GameState s) {
-    final totalCards = s.totalCards;
-    final pairCount = totalCards ~/ 2;
+    final gameType = ref.read(settingsProvider).gameType;
 
-    final numbers = List<int>.generate(100, (i) => i)..shuffle(_random);
-    final selected = numbers.take(pairCount).toList();
-
-    final cardValues = <String>[];
-    for (final num in selected) {
-      final label = num.toString().padLeft(2, '0');
-      cardValues.addAll([label, label]);
+    final List<CardModel> cards;
+    if (gameType == GameType.symbol) {
+      cards = _generateSymbolCards(s);
+    } else {
+      cards = _generateDigitCards(s);
     }
-    cardValues.shuffle(_random);
-
-    final cards = List<CardModel>.generate(
-      cardValues.length,
-      (i) => CardModel(id: 'card_${s.level}_$i', value: cardValues[i], isFaceUp: true),
-    );
 
     final newState = s.copyWith(
       cards: cards,
@@ -44,6 +39,51 @@ class GameNotifier extends Notifier<GameState> {
 
     _startPeek();
     return newState;
+  }
+
+  List<CardModel> _generateDigitCards(GameState s) {
+    final pairCount = s.totalCards ~/ 2;
+    final numbers = List<int>.generate(100, (i) => i)..shuffle(_random);
+    final selected = numbers.take(pairCount).toList();
+
+    final cardValues = <String>[];
+    for (final num in selected) {
+      final label = num.toString().padLeft(2, '0');
+      cardValues.addAll([label, label]);
+    }
+    cardValues.shuffle(_random);
+
+    return List<CardModel>.generate(
+      cardValues.length,
+      (i) => CardModel(id: 'card_${s.level}_$i', value: cardValues[i], isFaceUp: true),
+    );
+  }
+
+  List<CardModel> _generateSymbolCards(GameState s) {
+    final pairCount = s.totalCards ~/ 2;
+
+    final shuffledRanks = List<String>.from(_ranks)..shuffle(_random);
+    final selectedRanks = shuffledRanks.take(pairCount).toList();
+
+    final cardEntries = <_CardEntry>[];
+    for (final rank in selectedRanks) {
+      final shuffledSuits = List<String>.from(_suits)..shuffle(_random);
+      final suit1 = shuffledSuits[0];
+      final suit2 = shuffledSuits[1];
+      cardEntries.add(_CardEntry(rank, suit1));
+      cardEntries.add(_CardEntry(rank, suit2));
+    }
+    cardEntries.shuffle(_random);
+
+    return List<CardModel>.generate(
+      cardEntries.length,
+      (i) => CardModel(
+        id: 'card_${s.level}_$i',
+        value: cardEntries[i].rank,
+        suit: cardEntries[i].suit,
+        isFaceUp: true,
+      ),
+    );
   }
 
   void _startPeek() {
@@ -206,6 +246,12 @@ class GameNotifier extends Notifier<GameState> {
     _disposed = false;
     state = _generateCards(const GameState());
   }
+}
+
+class _CardEntry {
+  final String rank;
+  final String suit;
+  const _CardEntry(this.rank, this.suit);
 }
 
 final gameProvider = NotifierProvider<GameNotifier, GameState>(
