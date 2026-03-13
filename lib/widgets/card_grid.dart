@@ -27,6 +27,15 @@ class _CardGridState extends ConsumerState<CardGrid>
   double _cardWidth = _baseCardWidth;
   double _cardHeight = _baseCardHeight;
   int _columns = 4;
+  int _currentLevel = -1;
+
+  void _clearSlots() {
+    for (final slot in _slots.values) {
+      slot.fadeController?.dispose();
+    }
+    _slots.clear();
+    _fadingOut.clear();
+  }
 
   @override
   void dispose() {
@@ -129,6 +138,11 @@ class _CardGridState extends ConsumerState<CardGrid>
 
     return LayoutBuilder(
       builder: (context, constraints) {
+        if (gameState.level != _currentLevel) {
+          _clearSlots();
+          _currentLevel = gameState.level;
+        }
+
         final rowCount = (cards.length / columns).ceil();
         _computeCardSize(constraints, columns, rowCount);
         _reconcile(cards);

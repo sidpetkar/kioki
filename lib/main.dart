@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'providers/settings_notifier.dart';
 import 'screens/home_screen.dart';
 import 'theme.dart';
 
@@ -10,15 +11,19 @@ void main() {
   runApp(const ProviderScope(child: KiokiApp()));
 }
 
-class KiokiApp extends StatelessWidget {
+class KiokiApp extends ConsumerWidget {
   const KiokiApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final isDark = ref.watch(settingsProvider.select((s) => s.isDarkMode));
+
     return MaterialApp(
       title: 'Kioki',
       debugShowCheckedModeBanner: false,
-      theme: AppTheme.theme,
+      theme: AppTheme.light,
+      darkTheme: AppTheme.dark,
+      themeMode: isDark ? ThemeMode.dark : ThemeMode.light,
       home: const HomeScreen(),
     );
   }

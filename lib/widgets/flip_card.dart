@@ -31,7 +31,7 @@ class _FlipCardState extends State<FlipCard>
     super.initState();
     _controller = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 300),
+      duration: const Duration(milliseconds: 200),
     );
     _animation = Tween<double>(begin: 0, end: 1).animate(
       CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
@@ -82,14 +82,15 @@ class _FlipCardState extends State<FlipCard>
   }
 
   Widget _buildFront() {
+    final colors = Theme.of(context).colorScheme;
     return Transform(
       alignment: Alignment.center,
       transform: Matrix4.identity()..rotateY(math.pi),
       child: Container(
         decoration: BoxDecoration(
-          color: AppColors.cardFront,
+          color: colors.cardFront,
           borderRadius: BorderRadius.circular(4),
-          border: Border.all(color: AppColors.dark, width: 1.5),
+          border: Border.all(color: colors.foreground, width: 1.5),
         ),
         alignment: Alignment.center,
         child: Text(
@@ -97,7 +98,7 @@ class _FlipCardState extends State<FlipCard>
           style: GoogleFonts.jetBrainsMono(
             fontSize: 14,
             fontWeight: FontWeight.w700,
-            color: AppColors.dark,
+            color: colors.foreground,
           ),
         ),
       ),
@@ -105,9 +106,10 @@ class _FlipCardState extends State<FlipCard>
   }
 
   Widget _buildBack() {
+    final colors = Theme.of(context).colorScheme;
     return Container(
       decoration: BoxDecoration(
-        color: AppColors.cardBack,
+        color: colors.cardBack,
         borderRadius: BorderRadius.circular(4),
       ),
     );

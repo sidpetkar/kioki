@@ -9,6 +9,8 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = Theme.of(context).colorScheme;
+
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -43,7 +45,7 @@ class HomeScreen extends StatelessWidget {
                         child: Icon(
                           Icons.settings_outlined,
                           size: 22,
-                          color: AppColors.dark,
+                          color: colors.foreground,
                         ),
                       ),
                     ),
@@ -63,7 +65,7 @@ class HomeScreen extends StatelessWidget {
               style: GoogleFonts.jetBrainsMono(
                 fontSize: 36,
                 fontWeight: FontWeight.w700,
-                color: AppColors.dark,
+                color: colors.foreground,
                 letterSpacing: 12,
               ),
             ),
@@ -93,7 +95,7 @@ class HomeScreen extends StatelessWidget {
                     style: GoogleFonts.jetBrainsMono(
                       fontSize: 12,
                       fontWeight: FontWeight.w500,
-                      color: AppColors.dark,
+                      color: colors.foreground,
                       letterSpacing: 4,
                     ),
                   ),

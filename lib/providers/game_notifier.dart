@@ -30,17 +30,35 @@ class GameNotifier extends Notifier<GameState> {
 
     final cards = List<CardModel>.generate(
       cardValues.length,
-      (i) => CardModel(id: 'card_${s.level}_$i', value: cardValues[i]),
+      (i) => CardModel(id: 'card_${s.level}_$i', value: cardValues[i], isFaceUp: true),
     );
 
-    return s.copyWith(
+    final newState = s.copyWith(
       cards: cards,
       firstFlippedIndex: () => null,
       secondFlippedIndex: () => null,
       isLocked: false,
-      phase: GamePhase.playing,
+      phase: GamePhase.peeking,
       timeRemaining: GameState.maxTime,
     );
+
+    _startPeek();
+    return newState;
+  }
+
+  void _startPeek() {
+    Future.delayed(const Duration(milliseconds: 1800), () {
+      if (_disposed) return;
+      if (state.phase != GamePhase.peeking) return;
+
+      final flippedDown = state.cards
+          .map((c) => c.isMatched ? c : c.copyWith(isFaceUp: false))
+          .toList();
+      state = state.copyWith(
+        cards: flippedDown,
+        phase: GamePhase.playing,
+      );
+    });
   }
 
   void flipCard(int index) {

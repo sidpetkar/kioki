@@ -1,6 +1,6 @@
 import 'card_model.dart';
 
-enum GamePhase { playing, paused, gameOver, levelComplete }
+enum GamePhase { peeking, playing, paused, gameOver, levelComplete }
 
 class LevelConfig {
   final int columns;
