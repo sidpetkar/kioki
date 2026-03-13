@@ -3,7 +3,7 @@ import 'package:memory_card_game/main.dart';
 
 void main() {
   testWidgets('App launches', (WidgetTester tester) async {
-    await tester.pumpWidget(const KiokiApp());
-    expect(find.text('KIOKI'), findsOneWidget);
+    await tester.pumpWidget(const KiokuApp());
+    expect(find.text('KIOKU'), findsOneWidget);
   });
 }

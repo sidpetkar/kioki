@@ -140,18 +140,17 @@ class _ComboLabel extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final combo = ref.watch(gameProvider.select((s) => s.comboMultiplier));
-    final colors = Theme.of(context).colorScheme;
 
     if (combo <= 1) return const SizedBox.shrink();
 
     return Padding(
-      padding: const EdgeInsets.only(bottom: 8),
+      padding: const EdgeInsets.only(top: 24, bottom: 8),
       child: Text(
         '${combo}X COMBO',
         style: GoogleFonts.jetBrainsMono(
-          fontSize: 10,
+          fontSize: 14,
           fontWeight: FontWeight.w700,
-          color: colors.foreground,
+          color: Colors.red,
           letterSpacing: 4,
         ),
       ),
@@ -196,15 +195,18 @@ class _TopBar extends ConsumerWidget {
               _StatColumn(
                 label: 'SCORE',
                 value: score.toString().padLeft(2, '0'),
+                alignment: CrossAxisAlignment.start,
               ),
               if (timerEnabled)
                 _StatColumn(
                   label: 'TIME LEFT',
                   value: '${timeDisplay}s',
+                  alignment: CrossAxisAlignment.center,
                 ),
               _StatColumn(
                 label: 'LEVEL',
                 value: level.toString().padLeft(2, '0'),
+                alignment: CrossAxisAlignment.end,
               ),
             ],
           ),
@@ -217,19 +219,25 @@ class _TopBar extends ConsumerWidget {
 class _StatColumn extends StatelessWidget {
   final String label;
   final String value;
+  final CrossAxisAlignment alignment;
 
-  const _StatColumn({required this.label, required this.value});
+  const _StatColumn({
+    required this.label,
+    required this.value,
+    this.alignment = CrossAxisAlignment.center,
+  });
 
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
 
     return Column(
+      crossAxisAlignment: alignment,
       children: [
         Text(
           label,
           style: GoogleFonts.jetBrainsMono(
-            fontSize: 10,
+            fontSize: 12,
             fontWeight: FontWeight.w500,
             color: colors.muted,
             letterSpacing: 2,
@@ -265,7 +273,7 @@ class _BottomBar extends StatelessWidget {
     final colors = Theme.of(context).colorScheme;
 
     return Padding(
-      padding: const EdgeInsets.fromLTRB(24, 16, 24, 36),
+      padding: const EdgeInsets.fromLTRB(24, 16, 24, 40),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -277,7 +285,7 @@ class _BottomBar extends StatelessWidget {
               child: Text(
                 'HOME',
                 style: GoogleFonts.jetBrainsMono(
-                  fontSize: 12,
+                  fontSize: 14,
                   fontWeight: FontWeight.w500,
                   color: colors.foreground,
                   letterSpacing: 4,
@@ -290,7 +298,7 @@ class _BottomBar extends StatelessWidget {
             child: Text(
               isPaused ? 'RESUME' : 'PAUSE',
               style: GoogleFonts.jetBrainsMono(
-                fontSize: 12,
+                fontSize: 14,
                 fontWeight: FontWeight.w500,
                 color: colors.foreground,
                 letterSpacing: 4,
@@ -339,7 +347,7 @@ class _Overlay extends StatelessWidget {
               Text(
                 action,
                 style: GoogleFonts.jetBrainsMono(
-                  fontSize: 12,
+                  fontSize: 14,
                   fontWeight: FontWeight.w400,
                   color: colors.muted,
                   letterSpacing: 4,

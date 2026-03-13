@@ -98,7 +98,7 @@ class _SettingsRow extends StatelessWidget {
           Text(
             label,
             style: GoogleFonts.jetBrainsMono(
-              fontSize: 12,
+              fontSize: 14,
               fontWeight: FontWeight.w500,
               color: colors.foreground,
               letterSpacing: 4,
@@ -161,7 +161,7 @@ class _GameTypeRow extends StatelessWidget {
           Text(
             'GAME TYPE',
             style: GoogleFonts.jetBrainsMono(
-              fontSize: 12,
+              fontSize: 14,
               fontWeight: FontWeight.w500,
               color: colors.foreground,
               letterSpacing: 4,

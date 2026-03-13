@@ -1,11 +1,11 @@
 {
-    "name": "Kioki",
-    "short_name": "Kioki",
+    "name": "Kioku",
+    "short_name": "Kioku",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#F5F5F3",
     "theme_color": "#2E3338",
-    "description": "Kioki — a minimalist memory card game.",
+    "description": "Kioku — a minimalist memory card game.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

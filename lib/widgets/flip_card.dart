@@ -130,7 +130,7 @@ class _FlipCardState extends State<FlipCard>
         builder: (context, constraints) {
           final h = constraints.maxHeight;
           final rankSize = (h * 0.30).clamp(10.0, 28.0);
-          final iconSize = (h * 0.35).clamp(12.0, 32.0);
+          final iconSize = (h * 0.30).clamp(10.0, 30.0);
           final pad = (h * 0.06).clamp(2.0, 6.0);
 
           return Container(

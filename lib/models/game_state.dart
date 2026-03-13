@@ -41,7 +41,7 @@ class GameState {
   final bool isLocked;
   final GamePhase phase;
 
-  static const double maxTime = 45.0;
+  static const double maxTime = 60.0;
 
   const GameState({
     this.cards = const [],

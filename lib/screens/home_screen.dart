@@ -61,7 +61,7 @@ class HomeScreen extends StatelessWidget {
             ),
             const SizedBox(height: 24),
             Text(
-              'KIOKI',
+              'KIOKU',
               style: GoogleFonts.jetBrainsMono(
                 fontSize: 36,
                 fontWeight: FontWeight.w700,
@@ -71,7 +71,7 @@ class HomeScreen extends StatelessWidget {
             ),
             const Spacer(),
             Padding(
-              padding: const EdgeInsets.fromLTRB(24, 16, 24, 36),
+              padding: const EdgeInsets.fromLTRB(24, 16, 24, 40),
               child: Center(
                 child: GestureDetector(
                   onTap: () {
@@ -93,7 +93,7 @@ class HomeScreen extends StatelessWidget {
                   child: Text(
                     'START',
                     style: GoogleFonts.jetBrainsMono(
-                      fontSize: 12,
+                      fontSize: 14,
                       fontWeight: FontWeight.w500,
                       color: colors.foreground,
                       letterSpacing: 4,

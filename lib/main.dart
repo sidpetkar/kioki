@@ -8,18 +8,18 @@ import 'theme.dart';
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-  runApp(const ProviderScope(child: KiokiApp()));
+  runApp(const ProviderScope(child: KiokuApp()));
 }
 
-class KiokiApp extends ConsumerWidget {
-  const KiokiApp({super.key});
+class KiokuApp extends ConsumerWidget {
+  const KiokuApp({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isDark = ref.watch(settingsProvider.select((s) => s.isDarkMode));
 
     return MaterialApp(
-      title: 'Kioki',
+      title: 'Kioku',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.light,
       darkTheme: AppTheme.dark,
